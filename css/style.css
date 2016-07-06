@@ -1,0 +1,48 @@
+html, body, header, section, 
+form, fieldset, legend,
+label, select, option, input, h2, h3,
+ul, li, a {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+header ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  padding: 0 2rem;
+}
+header ul li:first-child {
+  flex-grow: 2;
+}
+header ul li:nth-child(n+2) {
+  flex-grow: 0.1;
+  text-align: right;
+}
+header ul li a {
+  color: #000000;
+  text-decoration: none;
+}
+fieldset {
+  border-radius: 4px;
+}
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+select {
+  margin-bottom: 0.5rem;
+}
+form {
+  max-width: 21rem;
+  overflow: hidden;
+}
+input[type="submit"] {
+  margin: 0.5rem;
+  float: right;
+  padding: 6px 3px;
+}
+.customers section[class^="customer"] {
+  max-width: 22rem;
+  outline: 1px solid red;
+}
