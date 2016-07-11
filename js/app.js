@@ -57,12 +57,12 @@ Customer.prototype.request = function(order) {
 Customer.prototype.receive = function(drink) {
   var svgClone = $(".not-display svg").clone();
   
-  svgClone.find(".wine").get(0).style.fill = 
+  svgClone.find(".cocktail").get(0).style.fill = 
     "rgb(" + 
     Math.round(drink.color[0]) + "," + 
     Math.round(drink.color[1]) + "," + 
     Math.round(drink.color[2]) + ")";
-  svgClone.find(".wine").get(0).style.opacity = drink.opacity;
+  svgClone.find(".cocktail").get(0).style.opacity = drink.opacity;
 
   this.selector.append(svgClone);
 };
