@@ -29,9 +29,11 @@ fieldset {
 label {
   display: block;
   margin-bottom: 0.3rem;
+  margin-left: 0.5rem;
 }
 select {
   margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
 }
 form {
   max-width: 21rem;
@@ -44,5 +46,16 @@ input[type="submit"] {
 }
 .customers section[class^="customer"] {
   max-width: 22rem;
-  outline: 1px solid red;
+  margin: 0.2rem 0.5rem;
+  min-height: 24rem;
+}
+.customers section[class^="customer"] svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.bartender {
+    border-top: 2px solid #808080;
+}
+.not-display {
+  display: none;
 }

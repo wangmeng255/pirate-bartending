@@ -8,16 +8,32 @@ var BarTender = function() {
 };
 
 BarTender.prototype.serve = function() {
-  window.setInterval(this.response.bind(this), 3000);
+  window.setInterval(this.response.bind(this), 1000);
 };
 
 BarTender.prototype.response = function() {
   if(this.orders.length) {
-    var drink = this.orders[0].toString();
+    var drink = new Drink(this.orders[0]);
+    $(".bartender").text("bartender is serving customer" + String(this.orders[0].id + 1));
     customers[this.orders[0].id].receive(drink);
     this.orders.shift();
   }
-  else console.log("bartender is ready!");
+  else $(".bartender").text("bartender is ready!");
+};
+
+var Drink = function(order) {
+  this.color = [0, 0, 0];
+  this.opacity = 1 - getPercent(order.bitter);
+  this.color[1] = (getPercent(order.fruit) + getPercent(order.sweet)) * 255;
+  this.color[2] = (getPercent(order.salty) + getPercent(order.sweet)) * 255;
+  this.color[0] = (getPercent(order.strong) + getPercent(order.sweet)) * 255;
+
+  function getPercent(val) {
+    if(val === "0") return 0;
+    if(val === "1") return 0.25;
+    if(val === "2") return 0.5;
+    if(val === "3") return 0.75;
+  }
 };
 
 var Order = function (id, order_array) {
@@ -30,7 +46,7 @@ var Order = function (id, order_array) {
 
 var Customer = function(id, server) {
   this.id = id;
-  this.selector = $(".customer" + this.id);
+  this.selector = $(".customer" + String(this.id + 1));
   this.server = server;
 };
 
@@ -39,7 +55,16 @@ Customer.prototype.request = function(order) {
 };
 
 Customer.prototype.receive = function(drink) {
-  this.selector.append("drink received!");
+  var svgClone = $(".not-display svg").clone();
+  
+  svgClone.find(".wine").get(0).style.fill = 
+    "rgb(" + 
+    Math.round(drink.color[0]) + "," + 
+    Math.round(drink.color[1]) + "," + 
+    Math.round(drink.color[2]) + ")";
+  svgClone.find(".wine").get(0).style.opacity = drink.opacity;
+
+  this.selector.append(svgClone);
 };
 
 $(document).ready(function() {
@@ -48,19 +73,17 @@ $(document).ready(function() {
   bartender.serve();
 
   customer_id += 1;
-  var customer = new Customer(customer_id, bartender);
+  var customer = new Customer(customer_id - 1, bartender);
   customers.push(customer);
-  console.log(customers);
 
   $(".customers").on("submit", "form", function(event) {
     event.preventDefault();
 
-    var getId = $(this).attr("id").replace("customer", "");
-    var customer_order = new Order(parseInt(getId), $(this).serializeArray());
+    var getId = parseInt($(this).attr("id").replace("customer", "")) - 1;
+    var customer_order = new Order(getId, $(this).serializeArray());
     
-    customers[getId-1].request(customer_order);
+    customers[getId].request(customer_order);
   });
-
 });
 
 
